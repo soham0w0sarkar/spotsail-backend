@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcrypt";
 const institutionSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -23,7 +23,7 @@ const institutionSchema = new mongoose.Schema({
   },
   seat_available: {
     type: Number,
-    required: true,
+    default: 0,
   },
   seat_type: [
     {
@@ -67,4 +67,14 @@ const institutionSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("institution", institutionSchema);
+institutionSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+institutionSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+export default mongoose.model("Institution", institutionSchema);
