@@ -13,23 +13,3 @@ export const isAuthentiated = catchAsyncError(async (req, res, next) => {
   req.user = await User.findById(decoded._id);
   next();
 });
-
-export const isAdmin = (req, res, next) => {
-  const role = req.user.role;
-
-  if (role !== "admin")
-    return next(
-      new ErrorHandler("Only Admin accounts can access this feature!!", 409)
-    );
-
-  next();
-};
-
-export const isSubsciber = (req, res, next) => {
-  if (req.user.role !== "admin" && req.user.subscription.status !== "active")
-    return next(
-      new ErrorHandler("Only Subcribers can Access this course!!", 409)
-    );
-
-  next();
-};
