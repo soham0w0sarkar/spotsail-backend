@@ -7,5 +7,6 @@ const userRouter = express.Router();
 userRouter.route("/register").post(register);
 userRouter.route("/login").post(login);
 userRouter.route("/logout").get(isAuthentiated, logout);
+userRouter.route("/nearBy").get();
 
 export default userRouter;

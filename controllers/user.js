@@ -1,6 +1,7 @@
 import sendToken from "../utils/sendToken.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
+import Institution from "../models/institution.js";
 import User from "../models/user.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
@@ -49,4 +50,30 @@ export const logout = catchAsyncError(async (req, res, next) => {
       success: true,
       message: "Logout Succesfully!!",
     });
+});
+
+export const nearByInstitution = catchAsyncError(async (req, res, next) => {
+  const { lat, lng } = req.query;
+
+  if (!lat || !lng)
+    return next(new ErrorHandler("Please enter the required fields", 400));
+
+  const radius = 100;
+
+  const nearByInstitution = await Institution.find({
+    location: {
+      $near: {
+        $geometry: {
+          type: "Point",
+          coordinates: [lng, lat],
+        },
+        $maxDistance: radius,
+      },
+    },
+  });
+
+  res.status(200).json({
+    success: true,
+    nearByInstitution,
+  });
 });
