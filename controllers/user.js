@@ -1,4 +1,4 @@
-import { instance } from "../server.js";
+// import { instance } from "../server.js";
 import sendToken from "../utils/sendToken.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
