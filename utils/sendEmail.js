@@ -1,5 +1,5 @@
-import { createTransport } from "nodemailer";
-import { catchAsyncError } from "../middlewares/catchAsyncError.js";
+import { createTransport } from 'nodemailer';
+import { catchAsyncError } from '../middlewares/catchAsyncError.js';
 
 const sendEmail = catchAsyncError(async (to, subject, message) => {
   const tranporter = createTransport({

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 const institutionSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,7 +18,7 @@ const institutionSchema = new mongoose.Schema({
     properties: {
       type: {
         type: String,
-        enum: ["Point"],
+        enum: ['Point'],
       },
       coordinates: {
         type: Array,
@@ -56,8 +56,8 @@ const institutionSchema = new mongoose.Schema({
   ],
 });
 
-institutionSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+institutionSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
@@ -66,4 +66,4 @@ institutionSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-export default mongoose.model("Institution", institutionSchema);
+export default mongoose.model('Institution', institutionSchema);

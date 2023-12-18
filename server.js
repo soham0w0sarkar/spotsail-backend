@@ -1,6 +1,6 @@
-import cloudinary from "cloudinary";
-import app from "./app.js";
-import { connectDB } from "./config/database.js";
+import cloudinary from 'cloudinary';
+import app from './app.js';
+import { connectDB } from './config/database.js';
 
 connectDB();
 

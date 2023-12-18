@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const reservationSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   institution_id: {
     type: mongoose.Schema.ObjectId,
-    ref: "Institution",
+    ref: 'Institution',
     required: true,
   },
   seat_type: {
@@ -28,4 +28,4 @@ const reservationSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Reservation", reservationSchema);
+export default mongoose.model('Reservation', reservationSchema);
