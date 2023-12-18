@@ -25,7 +25,6 @@ const reservationSchema = new mongoose.Schema({
   },
   paymentId: {
     type: String,
-    required: true,
   },
 });
 

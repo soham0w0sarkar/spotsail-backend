@@ -111,18 +111,18 @@ export const myReservation = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export const payment = catchAsyncError(async (req, res, next) => {
-  await instance.qrCode.create({
-    type: "upi_qr",
-    name: "Store Front Display",
-    usage: "single_use",
-    fixed_amount: true,
-    payment_amount: 300,
-    description: "For Store 1",
-    customer_id: "cust_HKsR5se84c5LTO",
-    close_by: 1681615838,
-    notes: {
-      purpose: "Test UPI QR Code notes",
-    },
-  });
-});
+// export const payment = catchAsyncError(async (req, res, next) => {
+//   await instance.qrCode.create({
+//     type: "upi_qr",
+//     name: "Store Front Display",
+//     usage: "single_use",
+//     fixed_amount: true,
+//     payment_amount: 300,
+//     description: "For Store 1",
+//     customer_id: "cust_HKsR5se84c5LTO",
+//     close_by: 1681615838,
+//     notes: {
+//       purpose: "Test UPI QR Code notes",
+//     },
+//   });
+// });
