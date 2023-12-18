@@ -9,9 +9,26 @@ const institutionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  image: {
+    public_id: String,
+    url: String,
+  },
   location: {
-    type: String,
-    required: true,
+    type: Object,
+    properties: {
+      type: {
+        type: String,
+        enum: ["Point"],
+      },
+      coordinates: {
+        type: Array,
+        items: {
+          type: Number,
+          minItems: 2,
+          maxItems: 2,
+        },
+      },
+    },
   },
   phone: {
     type: String,

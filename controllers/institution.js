@@ -1,27 +1,31 @@
+import cloudinary from "cloudinary";
 import Institution from "../models/institution.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
+import ErrorHandler from "../utils/errorHandler.js";
+import getDataUri from "../middlewares/dataUri.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
-  const { name, email, password, institution_type, location, phone } = req.body;
+  const { name, email, password, institution_type, phone } = req.body;
 
-  if (!name || !email || !password || !institution_type || !location || !phone)
+  console.log(req.body);
+
+  if (!name || !email || !password || !institution_type || !phone)
     return next(new ErrorHandler("Please enter the required fields", 400));
 
-  let Institution = await Institution.findOne({ email });
+  let institution = await Institution.findOne({ email });
 
-  if (Institution)
+  if (institution)
     return next(new ErrorHandler("Institution already exist", 409));
 
-  Institution = await Institution.create({
+  institution = await Institution.create({
     name,
     email,
     password,
     institution_type,
-    location,
     phone,
   });
 
-  sendToken(res, Institution, "Institution succesfully Registered!!", 201);
+  sendToken(res, institution, "Institution succesfully Registered!!", 201);
 });
 
 export const login = catchAsyncError(async (req, res, next) => {
@@ -50,4 +54,33 @@ export const logout = catchAsyncError(async (req, res, next) => {
       success: true,
       message: "Logout Succesfully!!",
     });
+});
+
+export const addData = catchAsyncError(async (req, res, next) => {
+  const { lat, long } = req.body;
+
+  const file = req.file;
+  const fileUri = getDataUri(file);
+
+  const uploadCloud = await cloudinary.v2.uploader.upload(fileUri);
+
+  const institution = await Institution.findById(req.user.id);
+
+  institution.location = {
+    properties: {
+      coordinates: [lat, long],
+    },
+  };
+
+  institution.image = {
+    public_id: uploadCloud.public_id,
+    url: uploadCloud.url,
+  };
+
+  await institution.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Data added succesfully!!",
+  });
 });
