@@ -1,3 +1,4 @@
+import { instance } from "../server.js";
 import sendToken from "../utils/sendToken.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
@@ -75,5 +76,53 @@ export const nearByInstitution = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     nearByInstitution,
+  });
+});
+
+export const reservation = catchAsyncError(async (req, res, next) => {
+  const { institution_email, seat_type } = req.body;
+
+  if (!institution_email || !seat_type)
+    return next(new ErrorHandler("Please enter the required fields", 400));
+
+  const institution = await Institution.find({ email: institution_email });
+
+  const reservation = await Reservation.create({
+    user_id: req.user.id,
+    institution_id: institution._id,
+    seat_type,
+    time: new Date().toLocaleTimeString(),
+  });
+
+  await reservation.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Reservation Succesfully!!",
+  });
+});
+
+export const myReservation = catchAsyncError(async (req, res, next) => {
+  const reservation = await Reservation.find({ user_id: req.user.id });
+
+  res.status(200).json({
+    success: true,
+    reservation,
+  });
+});
+
+export const payment = catchAsyncError(async (req, res, next) => {
+  await instance.qrCode.create({
+    type: "upi_qr",
+    name: "Store Front Display",
+    usage: "single_use",
+    fixed_amount: true,
+    payment_amount: 300,
+    description: "For Store 1",
+    customer_id: "cust_HKsR5se84c5LTO",
+    close_by: 1681615838,
+    notes: {
+      purpose: "Test UPI QR Code notes",
+    },
   });
 });

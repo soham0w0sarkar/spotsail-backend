@@ -4,6 +4,10 @@
 
 **[-]** Top restaurants/colleges/hospital near the users location at the homepage
 
+**[+]** add seat avaibility and seat types
+
+**[+]** change seat availability
+
 **[+]** Book a seat, make a payment to confirm it
 
 **[+]** Notifies when opted if the seat is not available

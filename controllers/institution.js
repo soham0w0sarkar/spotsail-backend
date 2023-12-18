@@ -84,3 +84,24 @@ export const addData = catchAsyncError(async (req, res, next) => {
     message: "Data added succesfully!!",
   });
 });
+
+export const addSeats = catchAsyncError(async (req, res, next) => {
+  const { seat_type, seat_available } = req.body;
+
+  if (!seat_type || !seat_available)
+    return next(new ErrorHandler("Please enter the required fields", 400));
+
+  const institution = await Institution.findById(req.user.id);
+
+  institution.seats.push({
+    seat_type,
+    seat_available,
+  });
+
+  await institution.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Seats added succesfully!!",
+  });
+});

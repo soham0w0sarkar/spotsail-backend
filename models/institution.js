@@ -38,11 +38,11 @@ const institutionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  seat_available: {
+  total_seat_available: {
     type: Number,
     default: 0,
   },
-  seat_type: [
+  seats: [
     {
       seat_type: {
         type: String,
@@ -50,34 +50,6 @@ const institutionSchema = new mongoose.Schema({
       },
       seat_available: {
         type: Number,
-        required: true,
-      },
-      seat_price: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
-  reservation: [
-    {
-      user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      seat_type: {
-        type: String,
-        required: true,
-      },
-      seat_price: {
-        type: Number,
-        required: true,
-      },
-      seat_number: {
-        type: Number,
-        required: true,
-      },
-      date: {
-        type: Date,
         required: true,
       },
     },
